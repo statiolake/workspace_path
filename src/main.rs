@@ -10,10 +10,10 @@ fn show_help() {
     println!("Utility for getting / creating workspace.");
     println!("Usage: {} [subcommand]", cmd_program);
     println!("Subcommands: ");
-    println!("    temp    Get template directory (the directory the new one will be copied from)");
-    println!("    year    Get year directory");
-    println!("    date    Get today's directory");
-    println!("    help    Show this help message");
+    println!("    temp (-t)  Get the directory template (copy source to create new workspace)");
+    println!("    year (-y)  Get the year directory");
+    println!("    date (-d)  Get today's workspace");
+    println!("    help (-h)  Show this help message");
 }
 
 type Result<T> = std::result::Result<T, String>;
