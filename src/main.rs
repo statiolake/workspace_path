@@ -12,7 +12,7 @@ fn show_help() {
     println!("Subcommands: ");
     println!("    temp    Get template directory (the directory the new one will be copied from)");
     println!("    year    Get year directory");
-    println!("    today   Get today's directory");
+    println!("    date    Get today's directory");
     println!("    help    Show this help message");
 }
 
@@ -21,10 +21,10 @@ type UnitResult = Result<()>;
 
 fn main() -> UnitResult {
     match env::args().nth(1).as_ref().map(String::as_str) {
-        Some("temp") => handle_temp(),
-        Some("year") => handle_year(),
-        Some("today") => handle_today(),
-        Some("help") => handle_help(),
+        Some("temp") | Some("-t") => handle_temp(),
+        Some("year") | Some("-y") => handle_year(),
+        Some("date") | Some("-d") => handle_date(),
+        Some("help") | Some("-h") => handle_help(),
         Some(subcmd) => handle_unknown(subcmd),
         None => handle_invalid(),
     }
@@ -42,7 +42,7 @@ fn handle_year() -> UnitResult {
     Ok(())
 }
 
-fn handle_today() -> UnitResult {
+fn handle_date() -> UnitResult {
     let temp = workspace_path(WorkspacePathKind::Temp)?;
     let year = workspace_path(WorkspacePathKind::Year)?;
     let date = workspace_path(WorkspacePathKind::Date)?;
@@ -108,12 +108,11 @@ fn create_workspace_if_needed(temp: &Path, year: &Path, date: &Path) -> UnitResu
     }
 
     create_dirs(&year)?;
-    use fs_extra::dir::{copy, move_dir, CopyOptions};
+    use fs_extra::dir::{copy, CopyOptions};
     copy(temp, year, &CopyOptions::new())
         .map_err(|e| format!("failed to copy template directory: {}", e))?;
     let copied = year.join("template");
-    move_dir(copied, date, &CopyOptions::new())
-        .map_err(|e| format!("failed to rename copied directory: {}", e))?;
+    fs::rename(copied, date).map_err(|e| format!("failed to rename copied directory: {}", e))?;
 
     Ok(())
 }
