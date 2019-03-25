@@ -1,7 +1,10 @@
 [package]
-name = "workspace-tools-rs"
+name = "workspace-path"
 version = "0.1.0"
 authors = ["statiolake <statiolake@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+chrono = "0.4.6"
+dirs = "1.0.5"
+fs_extra = "1.1.0"
