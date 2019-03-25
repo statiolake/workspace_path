@@ -1,5 +1,5 @@
 [package]
-name = "workspace-path"
+name = "workspace_path"
 version = "0.1.0"
 authors = ["statiolake <statiolake@gmail.com>"]
 edition = "2018"
