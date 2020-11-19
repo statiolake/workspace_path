@@ -20,7 +20,7 @@ type Result<T> = std::result::Result<T, String>;
 type UnitResult = Result<()>;
 
 fn main() -> UnitResult {
-    match env::args().nth(1).as_ref().map(String::as_str) {
+    match env::args().nth(1).as_deref() {
         Some("temp") | Some("-t") => handle_temp(),
         Some("year") | Some("-y") => handle_year(),
         Some("date") | Some("-d") => handle_date(),
