@@ -77,7 +77,8 @@ fn workspace_root() -> Result<PathBuf> {
     root.push("workspace");
     root.push("daily");
 
-    Ok(root)
+    // ジャンクションの場合があるので、その場合はジャンクションを解決したパスを返す。
+    to_absolute::canonicalize(root).map_err(|e| format!("canonicalization failed: {:?}", e))
 }
 
 fn workspace_path(kind: WorkspacePathKind) -> Result<PathBuf> {
