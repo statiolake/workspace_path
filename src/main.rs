@@ -108,7 +108,7 @@ fn create_workspace_if_needed(temp: &Path, year: &Path, date: &Path) -> UnitResu
         return Err("workspace template directory does not exist.".into());
     }
 
-    create_dirs(&year)?;
+    create_dirs(year)?;
     use fs_extra::dir::{copy, CopyOptions};
     copy(temp, year, &CopyOptions::new())
         .map_err(|e| format!("failed to copy template directory: {}", e))?;
