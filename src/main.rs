@@ -77,6 +77,10 @@ fn workspace_root() -> Result<PathBuf> {
     root.push("workspace");
     root.push("daily");
 
+    if !root.exists() {
+        return Err(format!("workspace root {} does not exist", root.display()));
+    }
+
     // ジャンクションの場合があるので、その場合はジャンクションを解決したパスを返す。
     to_absolute::canonicalize(root).map_err(|e| format!("canonicalization failed: {:?}", e))
 }
@@ -112,7 +116,7 @@ fn create_workspace_if_needed(temp: &Path, year: &Path, date: &Path) -> UnitResu
     use fs_extra::dir::{copy, CopyOptions};
     copy(temp, year, &CopyOptions::new())
         .map_err(|e| format!("failed to copy template directory: {}", e))?;
-    let copied = year.join("template");
+    let copied = year.join(temp.file_name().expect("no template directory name"));
     fs::rename(copied, date).map_err(|e| format!("failed to rename copied directory: {}", e))?;
 
     Ok(())
